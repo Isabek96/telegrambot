@@ -22,3 +22,4 @@ async def cmd_test(message: Message):
 @router.message(F.photo)
 async def cmd_photo(message: Message):
     await message.answer(f'ID фото: {message.photo[-1].file_id}')
+  
