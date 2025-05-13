@@ -7,7 +7,7 @@ from aiogram.types import Message, CallbackQuery
 import app.keyboards as kb
 
 router = Router()
-
+dsad
 
 class Reg(StatesGroup):
     name = State()
