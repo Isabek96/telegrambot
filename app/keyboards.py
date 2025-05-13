@@ -1,9 +1,7 @@
 from aiogram.types import (
-    ReplyKeyboardMarkup, KeyboardButton,
     InlineKeyboardMarkup, InlineKeyboardButton
 )
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
-
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 # Главное меню (обычные кнопки)
 catalog_kb = InlineKeyboardMarkup(inline_keyboard=[
@@ -13,18 +11,18 @@ catalog_kb = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="Обратная связь", callback_data="feedback")],
 ])
 
-
 # Инлайн-кнопка со ссылкой
 settings = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text="Наш сайт", url="https://polevod.com")],
         [InlineKeyboardButton(text="ТикТок канал", url="https://www.tiktok.com/@polevodtv")],
-         [InlineKeyboardButton(text="Youtube канал", url="https://www.youtube.com/c/PolevodTV")]
+        [InlineKeyboardButton(text="Youtube канал", url="https://www.youtube.com/c/PolevodTV")]
     ]
 )
 
-#Конпка для контакты
+# Конпка для контакты
 contacty_kb = ['Алматы', 'Шымкент']
+
 
 async def inline_contact():
     builder = InlineKeyboardBuilder()
@@ -40,6 +38,7 @@ async def inline_contact():
     )
     return builder.as_markup()
 
+
 async def contact_number_almaty():
     builder = InlineKeyboardBuilder()
     builder.add(InlineKeyboardButton(text="+77012261483", callback_data="phone_1"))
@@ -48,9 +47,10 @@ async def contact_number_almaty():
     return builder.as_markup()
 
 
-#Inline кнопки для каталога
+# Inline кнопки для каталога
 # Список для динамического создания обычных кнопок
-menu_1 = ['Открытый грунт', 'Закрытый грунт', 'Удобрения','Семена люцерны']
+menu_1 = ['Открытый грунт', 'Закрытый грунт', 'Удобрения', 'Семена люцерны']
+
 
 # Функция для создания клавиатуры (Reply, не Inline)
 # Функция для создания инлайн-кнопок
@@ -62,14 +62,17 @@ async def inline_menu_1():
     builder.adjust(2)
 
     builder.row(
-        InlineKeyboardButton(text='⬅️ назад',callback_data='go_home'),
+        InlineKeyboardButton(text='⬅️ назад', callback_data='go_home'),
         InlineKeyboardButton(text="🏠 Главное меню", callback_data="go_home")
     )
     return builder.as_markup()
-otk_grunt = ['Томаты','Огурец','Морковь','Капуста','Цветная капуста','Пекинская капуста',
-             'Краснокочанная капуста','Арбуз','Дыня','Свекла','Кукуруза сладкая',
-             'Баклажан','Сладкий перец','Острый перец','Лук','Кабачок',
-             'Редис','Тыква','Брокколи','Зелень','Шпинаты']
+
+
+otk_grunt = ['Томаты', 'Огурец', 'Морковь', 'Капуста', 'Цветная капуста', 'Пекинская капуста',
+             'Краснокочанная капуста', 'Арбуз', 'Дыня', 'Свекла', 'Кукуруза сладкая',
+             'Баклажан', 'Сладкий перец', 'Острый перец', 'Лук', 'Кабачок',
+             'Редис', 'Тыква', 'Брокколи', 'Зелень', 'Шпинаты']
+
 
 async def inline_menu_otk_grunt():
     builder = InlineKeyboardBuilder()
@@ -84,8 +87,9 @@ async def inline_menu_otk_grunt():
     return builder.as_markup()
 
 
-zak_grunt = ['Томаты','Огурец','Баклажан','Сладкий перец','Острый перец',
-             'Брокколи','Зелень']
+zak_grunt = ['Томаты', 'Огурец', 'Баклажан', 'Сладкий перец', 'Острый перец',
+             'Брокколи', 'Зелень']
+
 
 async def inline_menu_zakr_grunt():
     builder = InlineKeyboardBuilder()
@@ -94,13 +98,14 @@ async def inline_menu_zakr_grunt():
     builder.adjust(2)
 
     builder.row(
-        InlineKeyboardButton(text='⬅️ назад',callback_data='back_to_catalog'),
+        InlineKeyboardButton(text='⬅️ назад', callback_data='back_to_catalog'),
         InlineKeyboardButton(text="🏠 Главное меню", callback_data="go_home")
     )
     return builder.as_markup()
 
 
-udobrenie = ['Простые','Комплексные','Аминокислотные','Гуминовые','Микроэлементы']
+udobrenie = ['Простые', 'Комплексные', 'Аминокислотные', 'Гуминовые', 'Микроэлементы']
+
 
 async def inline_menu_udobrenie():
     builder = InlineKeyboardBuilder()
@@ -108,7 +113,7 @@ async def inline_menu_udobrenie():
         builder.add(InlineKeyboardButton(text=men_udobrene, callback_data=men_udobrene))
     builder.adjust(2)
     builder.row(
-        InlineKeyboardButton(text='⬅️ назад',callback_data='back_to_catalog'),
+        InlineKeyboardButton(text='⬅️ назад', callback_data='back_to_catalog'),
         InlineKeyboardButton(text="🏠 Главное меню", callback_data="go_home")
     )
     return builder.as_markup()
