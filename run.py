@@ -1,21 +1,23 @@
 import asyncio
 import logging
 
-# Импортируем библиотеку aiogram и объект Bot
 from aiogram import Bot, Dispatcher
-
-from app.handlers import router
 from config import token_api
+
+# Роутеры
+from app.handlers import router
+from app.register import router as feedback_router
 
 bot = Bot(token_api)
 dp = Dispatcher()
 
-
 # Запуск бота
 async def main():
+    # Подключаем оба роутера
     dp.include_router(router)
-    await dp.start_polling(bot)  # передаем bot в функцию start_polling
+    dp.include_router(feedback_router)
 
+    await dp.start_polling(bot)
 
 # Запуск программы
 if __name__ == '__main__':

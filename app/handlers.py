@@ -1,16 +1,12 @@
 from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import Message, CallbackQuery
 
 import app.keyboards as kb
 
 router = Router()
 
-class Reg(StatesGroup):
-    name = State()
-    number = State()
 
 
 @router.message(Command("start"))
@@ -63,7 +59,30 @@ async def cmd_contact_alma(callback: CallbackQuery):
     await callback.answer()
 
 
+@router.callback_query(F.data == 'city_Шымкент')
+async def cmd_to_shymkent(callback: CallbackQuery):
+    await callback.message.edit_text('Номера телефонов', reply_markup=await kb.contact_number_shymkent())
+    await callback.answer()
+
+#Настройки
+@router.callback_query(F.data == 'setting_1')
+async def cmd_setting(callback: CallbackQuery):
+    await callback.message.edit_text(
+        'Выберите настройки, которые хотите поменять:',
+        reply_markup=await kb.setting_inline()
+    )
+    await callback.answer()
+
 # Каталог товаров
+
+
+@router.callback_query(F.data.startswith("item_"))
+async def show_product_info(callback: CallbackQuery):
+    product_name = callback.data.replace("item_", "")
+    await callback.message.edit_text(f"🔎 Информация о товаре: {product_name}\n(Здесь будет подробное описание или кнопка 'Купить')")
+    await callback.answer()
+
+
 @router.callback_query(F.data == "catalog")
 async def cmd_catalog(callback: CallbackQuery):
     await callback.message.edit_text("Выберите семена и удобрения из каталога.", reply_markup=await kb.inline_menu_1())
@@ -97,6 +116,11 @@ async def back_to_catalog(callback: CallbackQuery):
     await callback.message.edit_text("Выберите семена и удобрения из каталога.", reply_markup=await kb.inline_menu_1())
     await callback.answer()
 
+#Назад на контакты
+@router.callback_query(F.data == "back_go_cato")
+async def back_to_contact(callback: CallbackQuery):
+    await callback.message.edit_text('Вы вернулись в контакты', reply_markup=await kb.inline_contact())
+    await callback.answer()
 
 # Главное меню
 @router.callback_query(F.data == "go_home")
@@ -105,23 +129,4 @@ async def go_home(callback: CallbackQuery):
     await callback.answer()
 
 
-# Регистрация клиентов
-@router.message(Command('reg'))
-async def cmd_register(message: Message, state: FSMContext):
-    await state.set_state(Reg.name)
-    await message.answer('Введите Ваше Имя')
 
-
-@router.message(Reg.name)
-async def reg_two(message: Message, state: FSMContext):
-    await state.update_data(name=message.text)
-    await state.set_state(Reg.number)
-    await message.answer(('Введите номер телефона'))
-
-
-@router.message(Reg.number)
-async def reg_three(message: Message, state: FSMContext):
-    await state.update_data(number=message.text)
-    data = await state.get_data()
-    await message.answer(f'Спасибо, регистрация завершена\nИмя:{data["name"]}\nНомер:{data["number"]}')
-    await state.clear()
