@@ -2,7 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from config import token_api
+from app.config import token_api
 
 # Роутеры
 from app.handlers import router

@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 import re
 import app.keyboards as kb
-
+from database import get_connection
 
 router = Router()
 
@@ -30,16 +30,24 @@ async def feedback_name(message: Message, state: FSMContext):
 @router.message(Feedback.number)
 async def feedback_number(message: Message, state: FSMContext):
     phone_number = message.text
-    # Проверка формата номера
-    if not re.match(r"^\+?\d{10,15}$", phone_number):  # Здесь проверяем, чтобы номер был в формате +7XXXXXXXXXX
+    if not re.match(r"^\+?\d{10,15}$", phone_number):
         await message.answer("Пожалуйста, введите корректный номер телефона.")
         return
 
     await state.update_data(number=phone_number)
     data = await state.get_data()
+
+    # Сохраняем в базу
+    conn = get_connection()
+    with conn.cursor() as cursor:
+        cursor.execute(
+            "INSERT INTO feedback (name, phone) VALUES (%s, %s)",
+            (data['name'], data['number'])
+        )
+        conn.commit()
+
     await message.answer(f"Спасибо! Мы свяжемся с вами:\n\nИмя: {data['name']}\nТелефон: {data['number']}")
     await state.clear()
-
 @router.callback_query(F.data == 'back_go_cato')
 async def go_back_to_catalog(callback: CallbackQuery, state: FSMContext):
     await callback.message.answer("Вы вернулись в каталог.", reply_markup=await kb.setting_inline)
